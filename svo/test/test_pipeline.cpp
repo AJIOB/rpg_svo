@@ -77,7 +77,11 @@ void BenchmarkNode::runFromFolder()
     {
     	std::cout << "Frame-Id: " << vo_->lastFrame()->id_ << " \t"
                   << "#Features: " << vo_->lastNumObservations() << " \t"
-                  << "Proc. Time: " << vo_->lastProcessingTime()*1000 << "ms \n";
+                  << "Proc. Time: " << vo_->lastProcessingTime()*1000 << "ms ";
+
+      auto& v = vo_->lastFrame()->T_f_w_.unit_quaternion().vec();
+
+      std::cout << " \t" << v.x() << " \t" << v.y() << " \t" << v.z() << "\n";
 
     	// access the pose of the camera via vo_->lastFrame()->T_f_w_.
     }
