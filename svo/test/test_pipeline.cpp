@@ -95,4 +95,3 @@ int main(int argc, char** argv)
   printf("BenchmarkNode finished.\n");
   return 0;
 }
-

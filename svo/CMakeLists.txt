@@ -2,8 +2,8 @@
 # user build settings
 
 SET(TRACE TRUE)
-SET(HAVE_G2O FALSE) 
-SET(USE_ROS TRUE) # Set FALSE if you want to build this package without Catkin
+SET(HAVE_G2O FALSE)
+SET(USE_ROS FALSE) # Set FALSE if you want to build this package without Catkin
 SET(DEBUG_OUTPUT FALSE) # Only relevant if build without ROS
 
 ################################################################################
@@ -44,7 +44,7 @@ ELSE()
 ENDIF()
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
 
-# Add plain cmake packages 
+# Add plain cmake packages
 FIND_PACKAGE(OpenCV REQUIRED)
 FIND_PACKAGE(Eigen REQUIRED)
 FIND_PACKAGE(Sophus REQUIRED)
@@ -76,7 +76,7 @@ INCLUDE_DIRECTORIES(
 )
 
 # Set link libraries
-LIST(APPEND LINK_LIBS 
+LIST(APPEND LINK_LIBS
   ${OpenCV_LIBS}
   ${Sophus_LIBRARIES}
   ${Boost_LIBRARIES}
@@ -129,23 +129,23 @@ TARGET_LINK_LIBRARIES(svo ${LINK_LIBS})
 ################################################################################
 # TESTS
 
-ADD_EXECUTABLE(test_feature_align test/test_feature_alignment.cpp)
+ADD_EXECUTABLE(test_feature_align EXCLUDE_FROM_ALL test/test_feature_alignment.cpp)
 TARGET_LINK_LIBRARIES(test_feature_align svo)
 
 ADD_EXECUTABLE(test_pipeline test/test_pipeline.cpp)
 TARGET_LINK_LIBRARIES(test_pipeline svo)
 
-ADD_EXECUTABLE(test_matcher test/test_matcher.cpp)
+ADD_EXECUTABLE(test_matcher EXCLUDE_FROM_ALL test/test_matcher.cpp)
 TARGET_LINK_LIBRARIES(test_matcher svo)
 
-ADD_EXECUTABLE(test_feature_detection test/test_feature_detection.cpp)
+ADD_EXECUTABLE(test_feature_detection EXCLUDE_FROM_ALL test/test_feature_detection.cpp)
 TARGET_LINK_LIBRARIES(test_feature_detection svo)
 
-ADD_EXECUTABLE(test_depth_filter test/test_depth_filter.cpp)
+ADD_EXECUTABLE(test_depth_filter EXCLUDE_FROM_ALL test/test_depth_filter.cpp)
 TARGET_LINK_LIBRARIES(test_depth_filter svo)
 
-ADD_EXECUTABLE(test_sparse_img_align test/test_sparse_img_align.cpp)
+ADD_EXECUTABLE(test_sparse_img_align EXCLUDE_FROM_ALL test/test_sparse_img_align.cpp)
 TARGET_LINK_LIBRARIES(test_sparse_img_align svo)
 
-ADD_EXECUTABLE(test_pose_optimizer test/test_pose_optimizer.cpp)
-TARGET_LINK_LIBRARIES(test_pose_optimizer svo) 
+ADD_EXECUTABLE(test_pose_optimizer EXCLUDE_FROM_ALL test/test_pose_optimizer.cpp)
+TARGET_LINK_LIBRARIES(test_pose_optimizer svo)
