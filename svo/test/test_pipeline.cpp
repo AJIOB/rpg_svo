@@ -58,6 +58,8 @@ BenchmarkNode::~BenchmarkNode()
 
 void BenchmarkNode::runFromFolder()
 {
+  double xx = 0, yy = 0, zz = 0;
+
   for(int img_id = 2; img_id < 188; ++img_id)
   {
     // load image
@@ -81,7 +83,13 @@ void BenchmarkNode::runFromFolder()
 
       auto& v = vo_->lastFrame()->T_f_w_.unit_quaternion().vec();
 
-      std::cout << " \t" << v.x() << " \t" << v.y() << " \t" << v.z() << "\n";
+      // std::cout << " \t" << v.x() << " \t" << v.y() << " \t" << v.z() << "\n";
+
+      xx += v.x();
+      yy += v.y();
+      zz += v.z();
+
+      std::cout << " \t" << xx << " \t" << yy << " \t" << zz << "\n";
 
     	// access the pose of the camera via vo_->lastFrame()->T_f_w_.
     }

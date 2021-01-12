@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Start"
 cd rpg_svo/svo
 mkdir -p build
 cd build
