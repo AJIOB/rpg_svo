@@ -30,6 +30,8 @@
 #include <iostream>
 #include "test_utils.h"
 
+#define CUSTOM_DATASET 1
+
 namespace svo {
 
 class BenchmarkNode
@@ -60,12 +62,21 @@ void BenchmarkNode::runFromFolder()
 {
   double xx = 0, yy = 0, zz = 0;
 
+#if CUSTOM_DATASET
+  for(int img_id = 1; img_id < 4434; ++img_id)
+#else
   for(int img_id = 2; img_id < 188; ++img_id)
+#endif
   {
     // load image
     std::stringstream ss;
+#if CUSTOM_DATASET
+    ss << svo::test_utils::getDatasetDir() << "/dataset/cam.1."
+       << img_id << ".data.pgm";
+#else
     ss << svo::test_utils::getDatasetDir() << "/sin2_tex2_h1_v8_d/img/frame_"
        << std::setw( 6 ) << std::setfill( '0' ) << img_id << "_0.png";
+#endif
     if(img_id == 2)
       std::cout << "reading image " << ss.str() << std::endl;
     cv::Mat img(cv::imread(ss.str().c_str(), 0));
