@@ -30,8 +30,16 @@
 #include <iostream>
 #include "test_utils.h"
 
+#define CUSTOM_DATASET_ORIGINAL ".original"
+#define CUSTOM_DATASET_PATCHED ".preprocessed"
+#define CUSTOM_DATASET_CANNY_PATCHED ".preprocessed_canny"
+
 #define CUSTOM_DATASET 1
+#define CUSTOM_DATASET_SELECTED CUSTOM_DATASET_CANNY_PATCHED
+// Must be "1" or "2"
+#define CUSTOM_DATASET_CAMERA_ID "2"
 #define ALMOST_SILENT_LOGS 1
+#define PRINT_POSITION_ONLY_IF_CHANGE 1
 
 namespace svo {
 
@@ -77,7 +85,7 @@ void BenchmarkNode::runFromFolder()
     // load image
     std::stringstream ss;
 #if CUSTOM_DATASET
-    ss << svo::test_utils::getDatasetDir() << "/dataset/cam.1."
+    ss << svo::test_utils::getDatasetDir() << "/dataset" CUSTOM_DATASET_SELECTED "/cam." CUSTOM_DATASET_CAMERA_ID "."
        << img_id << ".data.pgm";
 #else
     ss << svo::test_utils::getDatasetDir() << "/sin2_tex2_h1_v8_d/img/frame_"
@@ -108,8 +116,11 @@ void BenchmarkNode::runFromFolder()
       yy += v.y();
       zz += v.z();
 
-#if !ALMOST_SILENT_LOGS
-      std::cout << " \t" << xx << " \t" << yy << " \t" << zz << "\n";
+#if !ALMOST_SILENT_LOGS || PRINT_POSITION_ONLY_IF_CHANGE
+      if ((!PRINT_POSITION_ONLY_IF_CHANGE) || v.x() || v.y() || v.z())
+      {
+        std::cout << " \t" << xx << " \t" << yy << " \t" << zz << "\n";
+      }
 #endif
 
     	// access the pose of the camera via vo_->lastFrame()->T_f_w_.

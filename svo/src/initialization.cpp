@@ -26,14 +26,16 @@
 namespace svo {
 namespace initialization {
 
+constexpr size_t MIN_NUM_OF_FEATURES = 100;
+
 InitResult KltHomographyInit::addFirstFrame(FramePtr frame_ref)
 {
   reset();
   detectFeatures(frame_ref, px_ref_, f_ref_);
-  if(px_ref_.size() < 100)
+  if(px_ref_.size() < MIN_NUM_OF_FEATURES)
   {
     std::stringstream ss;
-    ss << "First image has less than 100 features. Retry in more textured environment. Currently " << px_ref_.size();
+    ss << "First image has less than " << MIN_NUM_OF_FEATURES << " features. Retry in more textured environment. Currently " << px_ref_.size();
 
     SVO_WARN_STREAM_THROTTLE(2.0, ss.str().c_str());
     return FAILURE;
