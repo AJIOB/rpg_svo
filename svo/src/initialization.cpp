@@ -32,7 +32,10 @@ InitResult KltHomographyInit::addFirstFrame(FramePtr frame_ref)
   detectFeatures(frame_ref, px_ref_, f_ref_);
   if(px_ref_.size() < 100)
   {
-    SVO_WARN_STREAM_THROTTLE(2.0, "First image has less than 100 features. Retry in more textured environment.");
+    std::stringstream ss;
+    ss << "First image has less than 100 features. Retry in more textured environment. Currently " << px_ref_.size();
+
+    SVO_WARN_STREAM_THROTTLE(2.0, ss.str().c_str());
     return FAILURE;
   }
   frame_ref_ = frame_ref;

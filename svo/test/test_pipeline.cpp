@@ -31,6 +31,7 @@
 #include "test_utils.h"
 
 #define CUSTOM_DATASET 1
+#define ALMOST_SILENT_LOGS 1
 
 namespace svo {
 
@@ -93,9 +94,11 @@ void BenchmarkNode::runFromFolder()
     // display tracking quality
     if(vo_->lastFrame() != NULL)
     {
+#if !ALMOST_SILENT_LOGS
     	std::cout << "Frame-Id: " << vo_->lastFrame()->id_ << " \t"
                   << "#Features: " << vo_->lastNumObservations() << " \t"
                   << "Proc. Time: " << vo_->lastProcessingTime()*1000 << "ms ";
+#endif
 
       auto& v = vo_->lastFrame()->T_f_w_.unit_quaternion().vec();
 
@@ -105,7 +108,9 @@ void BenchmarkNode::runFromFolder()
       yy += v.y();
       zz += v.z();
 
+#if !ALMOST_SILENT_LOGS
       std::cout << " \t" << xx << " \t" << yy << " \t" << zz << "\n";
+#endif
 
     	// access the pose of the camera via vo_->lastFrame()->T_f_w_.
     }
