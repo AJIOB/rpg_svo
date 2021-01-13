@@ -47,7 +47,12 @@ public:
 
 BenchmarkNode::BenchmarkNode()
 {
+#if CUSTOM_DATASET
+  // fx, fy = 10 are random, but should be set as here: https://stackoverflow.com/a/16330470/6818663
+  cam_ = new vk::PinholeCamera(32, 32, 10, 10, 16.0, 16.0);
+#else
   cam_ = new vk::PinholeCamera(752, 480, 315.5, 315.5, 376.0, 240.0);
+#endif
   vo_ = new svo::FrameHandlerMono(cam_);
   vo_->start();
 }
@@ -105,6 +110,8 @@ void BenchmarkNode::runFromFolder()
     	// access the pose of the camera via vo_->lastFrame()->T_f_w_.
     }
   }
+
+  std::cout << "Total results: \t" << xx << " \t" << yy << " \t" << zz << "\n";
 }
 
 } // namespace svo
