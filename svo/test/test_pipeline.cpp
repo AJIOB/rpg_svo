@@ -34,12 +34,12 @@
 #define CUSTOM_DATASET_PATCHED ".preprocessed"
 #define CUSTOM_DATASET_CANNY_PATCHED ".preprocessed_canny"
 
-#define CUSTOM_DATASET 1
+#define CUSTOM_DATASET 0
 #define CUSTOM_DATASET_SELECTED CUSTOM_DATASET_CANNY_PATCHED
 // Must be "1" or "2"
 #define CUSTOM_DATASET_CAMERA_ID "2"
 #define ALMOST_SILENT_LOGS 1
-#define PRINT_POSITION_ONLY_IF_CHANGE 1
+#define PRINT_POSITION_ONLY_IF_CHANGE 0
 
 namespace svo {
 
@@ -75,9 +75,10 @@ BenchmarkNode::~BenchmarkNode()
 void BenchmarkNode::runFromFolder()
 {
   double xx = 0, yy = 0, zz = 0;
+  double execution_time = 0;
 
 #if CUSTOM_DATASET
-  for(int img_id = 1; img_id < 4434; ++img_id)
+  for(int img_id = 0; img_id < 4434; ++img_id)
 #else
   for(int img_id = 2; img_id < 188; ++img_id)
 #endif
@@ -115,6 +116,7 @@ void BenchmarkNode::runFromFolder()
       xx += v.x();
       yy += v.y();
       zz += v.z();
+      execution_time += vo_->lastProcessingTime();
 
 #if !ALMOST_SILENT_LOGS || PRINT_POSITION_ONLY_IF_CHANGE
       if ((!PRINT_POSITION_ONLY_IF_CHANGE) || v.x() || v.y() || v.z())
@@ -128,6 +130,23 @@ void BenchmarkNode::runFromFolder()
   }
 
   std::cout << "Total results: \t" << xx << " \t" << yy << " \t" << zz << "\n";
+
+  const char* out_file_name = "svo."
+#if CUSTOM_DATASET
+    "our"
+#else
+    "sin"
+#endif
+    ".out.csv";
+
+  std::ofstream of(out_file_name, std::ofstream::out | std::ofstream::app);
+
+  of << execution_time << std::endl;
+  std::cout << "Execution time in seconds: " << execution_time << std::endl;
+
+  of.close();
+
+  std::cout << "Time was saved in '" << out_file_name << "' file" << std::endl;
 }
 
 } // namespace svo
